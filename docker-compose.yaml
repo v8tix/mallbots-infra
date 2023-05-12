@@ -18,9 +18,10 @@ services:
   nats:
     container_name: n1
     image: nats:2.9.16-alpine3.17
-    command: --name N1 --cluster_name NATS -m 8222 --js --sd /var/lib/nats/data --cluster nats://0.0.0.0:4245 --routes nats://172.10.10.60:4245,nats://172.10.10.61:4245,nats://172.10.10.62:4245 -p 4222
+    command: --name N1 --cluster_name NATS -m 8222 --js --sd /var/lib/nats/data --cluster nats://0.0.0.0:4245 --routes nats://n1.nats.net:4245,nats://n2.nats.net:4245,nats://n3.nats.net:4245 -p 4222
     volumes:
       - 'jsdata:/var/lib/nats/data'
+      - ./config/hosts:/etc/hosts
     networks:
       nats:
         ipv4_address: 172.10.10.60
@@ -30,9 +31,10 @@ services:
   nats-1:
     container_name: n2
     image: nats:2.9.16-alpine3.17
-    command: --name N2 --cluster_name NATS --js --sd /var/lib/nats/data --cluster nats://0.0.0.0:4245 --routes nats://172.10.10.60:4245,nats://172.10.10.61:4245,nats://172.10.10.62:4245 -p 4222
+    command: --name N2 --cluster_name NATS --js --sd /var/lib/nats/data --cluster nats://0.0.0.0:4245 --routes nats://n1.nats.net:4245,nats://n2.nats.net:4245,nats://n3.nats.net:4245 -p 4222
     volumes:
       - 'jsdata:/var/lib/nats/data'
+      - ./config/hosts:/etc/hosts
     networks:
       nats:
         ipv4_address: 172.10.10.61
@@ -42,9 +44,10 @@ services:
   nats-2:
     container_name: n3
     image: nats:2.9.16-alpine3.17
-    command: --name N3 --cluster_name NATS --js --sd /var/lib/nats/data --cluster nats://0.0.0.0:4245 --routes nats://172.10.10.60:4245,nats://172.10.10.61:4245,nats://172.10.10.62:4245 -p 4222
+    command: --name N3 --cluster_name NATS --js --sd /var/lib/nats/data --cluster nats://0.0.0.0:4245 --routes nats://n1.nats.net:4245,nats://n2.nats.net:4245,nats://n3.nats.net:4245 -p 4222
     volumes:
       - 'jsdata:/var/lib/nats/data'
+      - ./config/hosts:/etc/hosts
     networks:
       nats:
         ipv4_address: 172.10.10.62
