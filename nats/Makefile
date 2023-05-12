@@ -62,6 +62,11 @@ cmp/up:
 cmp/logs:
 	@docker-compose logs -f
 
+## cmp/restart: restart service containers
+.PHONY: cmp/restart
+cmp/restart:
+	@docker compose restart
+
 ## cmp/stop: stop and remove the containers
 .PHONY: cmp/stop
 cmp/stop:
