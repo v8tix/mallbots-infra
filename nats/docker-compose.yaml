@@ -1,27 +1,12 @@
 version: "3.8"
 services:
-  postgres:
-    container_name: postgres
-    hostname: postgres
-    image: postgres:12-alpine
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: itsasecret
-    ports:
-      - '5432:5432'
-    volumes:
-      - 'pgdata:/var/lib/postgresql/data'
-      - './db/schemas:/docker-entrypoint-initdb.d'
-    networks:
-      nats:
-        ipv4_address: 172.10.10.63
   nats:
     container_name: n1
     image: nats:2.9.16-alpine3.17
     command: --name N1 --cluster_name NATS -m 8222 --js --sd /var/lib/nats/data --cluster nats://0.0.0.0:4245 --routes nats://n1.nats.net:4245,nats://n2.nats.net:4245,nats://n3.nats.net:4245 -p 4222
     volumes:
       - 'jsdata:/var/lib/nats/data'
-      - ./config/hosts:/etc/hosts
+      - ./shared/hosts:/etc/hosts
     networks:
       nats:
         ipv4_address: 172.10.10.60
@@ -34,7 +19,7 @@ services:
     command: --name N2 --cluster_name NATS --js --sd /var/lib/nats/data --cluster nats://0.0.0.0:4245 --routes nats://n1.nats.net:4245,nats://n2.nats.net:4245,nats://n3.nats.net:4245 -p 4222
     volumes:
       - 'jsdata:/var/lib/nats/data'
-      - ./config/hosts:/etc/hosts
+      - ./shared/hosts:/etc/hosts
     networks:
       nats:
         ipv4_address: 172.10.10.61
@@ -47,7 +32,7 @@ services:
     command: --name N3 --cluster_name NATS --js --sd /var/lib/nats/data --cluster nats://0.0.0.0:4245 --routes nats://n1.nats.net:4245,nats://n2.nats.net:4245,nats://n3.nats.net:4245 -p 4222
     volumes:
       - 'jsdata:/var/lib/nats/data'
-      - ./config/hosts:/etc/hosts
+      - ./shared/hosts:/etc/hosts
     networks:
       nats:
         ipv4_address: 172.10.10.62
@@ -55,7 +40,6 @@ services:
       - "4224:4222"
     depends_on: ["nats"]
 volumes:
-  pgdata:
   jsdata:
 networks:
   nats:

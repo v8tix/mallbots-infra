@@ -26,6 +26,21 @@ nats/pull:
 natsbox/pull:
 	@docker pull natsio/nats-box:${NATS_BOX_TAG}
 
+## natsbox/bash: start a shell instance on the nats-box container
+.PHONY: natsbox/bash
+natsbox/bash:
+	@docker run --network ${NATS_NETWORK} --rm -it natsio/nats-box:${NATS_BOX_TAG}
+
+## cntr/networks: list the Docker container networks on the system
+.PHONY: cntr/networks
+cntr/networks:
+	@docker network ls
+
+## nats/net: log the /etc/hosts file present on the containers
+.PHONY: nats/net
+nats/net:
+	@docker exec -it "${NATS_CNTR}" cat /etc/hosts
+
 # ==============================================================================
 
 # ==================================================================================== #
@@ -52,31 +67,19 @@ cmp/logs:
 cmp/stop:
 	@docker-compose stop
 
-## cmp/clean: stop and remove containers, networks
+## cmp/clean: stop and remove containers, networks, and volumes
 .PHONY: cmp/clean
 cmp/clean:
-	@docker-compose down
+	@docker-compose down --volumes
 
 # ==============================================================================
 
 # ==================================================================================== #
-# Postgres
+# NATS
 # ==================================================================================== #
-
-## db/cp-script: copy a shell script to facilitate access to the mallbots database
-.PHONY: db/cp-script
-db/cp-script:
-	@chmod +x ./db/scripts/get_psql.sh
-	@docker cp ./db/scripts/get_psql.sh "${POSTGRES_CNTR}":/
-
-## db/psql: start a psql instance for the mallbots database
-.PHONY: db/psql
-db/psql:
-	@docker exec -it "${POSTGRES_CNTR}" ./get_psql.sh
-
-## db/bash: start a shell instance on the Postgres container
-.PHONY: db/bash
-db/bash:
-	@docker exec -it "${POSTGRES_CNTR}" bash
+## nats/telnet: telnet to N1 nats cluster node
+.PHONY: nats/telnet
+nats/telnet:
+	@telnet "${NATS_N1_CNTR_LOOKUP}" 4222
 
 # ==============================================================================
