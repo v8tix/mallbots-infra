@@ -36,10 +36,35 @@ natsbox/bash:
 cntr/networks:
 	@docker network ls
 
-## nats/net: log the /etc/hosts file present on the containers
-.PHONY: nats/net
-nats/net:
-	@docker exec -it "${NATS_CNTR}" cat /etc/hosts
+## nats/net-1: log the /etc/hosts file present on the N1 server
+.PHONY: nats/net-1
+nats/net-1:
+	@docker exec -it "${NATS_N1}" cat /etc/hosts
+
+## nats/net-2: log the /etc/hosts file present on the N2 server
+.PHONY: nats/net-2
+nats/net-2:
+	@docker exec -it "${NATS_N2}" cat /etc/hosts
+
+## nats/net-3: log the /etc/hosts file present on the N3 server
+.PHONY: nats/net-3
+nats/net-3:
+	@docker exec -it "${NATS_N3}" cat /etc/hosts
+
+## nats/reload-n1: reloads the n1 server configuration
+.PHONY: nats/reload-n1
+nats/reload-n1:
+	@docker exec -it "${NATS_N1}" kill -HUP 1
+
+## nats/reload-n2: reloads the n2 server configuration
+.PHONY: nats/reload-n2
+nats/reload-n2:
+	@docker exec -it "${NATS_N2}" kill -HUP 1
+
+## nats/reload-n3: reloads the n3 server configuration
+.PHONY: nats/reload-n3
+nats/reload-n3:
+	@docker exec -it "${NATS_N3}" kill -HUP 1
 
 # ==============================================================================
 
@@ -85,6 +110,6 @@ cmp/clean:
 ## nats/telnet: telnet to N1 nats cluster node
 .PHONY: nats/telnet
 nats/telnet:
-	@telnet "${NATS_N1_CNTR_LOOKUP}" 4222
+	@telnet "${NATS_NODE_IP_ADDR}" 4222
 
 # ==============================================================================

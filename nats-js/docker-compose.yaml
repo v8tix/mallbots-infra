@@ -1,0 +1,57 @@
+version: "3.8"
+services:
+  nats:
+    container_name: n1
+    image: nats:2.9.16-alpine3.17
+    command: -c /etc/nats/nats-server.conf
+    volumes:
+      - 'data-n1:/var/lib/nats/data-n1'
+      - ./n1/net/hosts:/etc/hosts
+      - ./n1/server/nats-server.conf:/etc/nats/nats-server.conf
+    networks:
+      nats:
+        ipv4_address: 172.10.10.60
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+  nats-1:
+    container_name: n2
+    image: nats:2.9.16-alpine3.17
+    command: -c /etc/nats/nats-server.conf
+    volumes:
+      - 'data-n2:/var/lib/nats/data-n2'
+      - ./n2/net/hosts:/etc/hosts
+      - ./n2/server/nats-server.conf:/etc/nats/nats-server.conf
+    networks:
+      nats:
+        ipv4_address: 172.10.10.61
+    ports:
+      - "4223:4222"
+      - "8223:8222"
+    depends_on: ["nats"]
+  nats-2:
+    container_name: n3
+    image: nats:2.9.16-alpine3.17
+    command: -c /etc/nats/nats-server.conf
+    volumes:
+      - 'data-n3:/var/lib/nats/data-n3'
+      - ./n3/net/hosts:/etc/hosts
+      - ./n3/server/nats-server.conf:/etc/nats/nats-server.conf
+    networks:
+      nats:
+        ipv4_address: 172.10.10.62
+    ports:
+      - "4224:4222"
+      - "8224:8222"
+    depends_on: ["nats"]
+volumes:
+  data-n1:
+  data-n2:
+  data-n3:
+networks:
+  nats:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.10.10.0/24"
+
