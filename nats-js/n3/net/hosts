@@ -1,0 +1,11 @@
+127.0.0.1	localhost   n3.nats.net
+
+172.10.10.60	 n1.nats.net
+172.10.10.61     n2.nats.net
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters

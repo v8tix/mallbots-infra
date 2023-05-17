@@ -1,8 +1,6 @@
-127.0.0.1	localhost
-127.0.1.1	v8tix-22-04
+127.0.0.1	localhost   n2.nats.net
 
 172.10.10.60	 n1.nats.net
-172.10.10.61     n2.nats.net
 172.10.10.62     n3.nats.net
 
 # The following lines are desirable for IPv6 capable hosts
