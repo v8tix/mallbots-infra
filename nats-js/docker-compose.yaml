@@ -2,7 +2,7 @@ version: "3.8"
 services:
   nats:
     container_name: n1
-    image: nats:2.9.16-alpine3.17
+    image: nats:2.9.17-alpine3.18
     command: -c /etc/nats/nats-server.conf
     volumes:
       - 'data-n1:/var/lib/nats/data-n1'
@@ -16,7 +16,7 @@ services:
       - "8222:8222"
   nats-1:
     container_name: n2
-    image: nats:2.9.16-alpine3.17
+    image: nats:2.9.17-alpine3.18
     command: -c /etc/nats/nats-server.conf
     volumes:
       - 'data-n2:/var/lib/nats/data-n2'
@@ -31,7 +31,7 @@ services:
     depends_on: ["nats"]
   nats-2:
     container_name: n3
-    image: nats:2.9.16-alpine3.17
+    image: nats:2.9.17-alpine3.18
     command: -c /etc/nats/nats-server.conf
     volumes:
       - 'data-n3:/var/lib/nats/data-n3'
